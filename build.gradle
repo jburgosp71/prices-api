@@ -69,5 +69,6 @@ tasks.named('check') {
 }
 
 test {
+    //jvmArgs '-XX:+EnableDynamicAgentLoading'
     jvmArgs += ["-Djdk.attach.allowAttachSelf=true"]
 }

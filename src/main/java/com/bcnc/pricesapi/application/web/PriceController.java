@@ -1,6 +1,8 @@
 package com.bcnc.pricesapi.application.web;
 
 import com.bcnc.pricesapi.domain.exception.*;
+import com.bcnc.pricesapi.application.service.BrandService;
+import com.bcnc.pricesapi.domain.model.Brand;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,12 @@ import java.time.format.DateTimeParseException;
 @RestController
 @RequestMapping("/prices")
 public class PriceController {
+
+    private final BrandService brandService;
+
+    public PriceController(BrandService brandService) {
+        this.brandService = brandService;
+    }
 
     @GetMapping("/")
     public ResponseEntity<String> prices(
@@ -39,13 +47,17 @@ public class PriceController {
             throw new InvalidProductIdException();
         }
 
-        // Validar brandid numérico
+        Brand brand = getBrand(brandIdStr);
+
+        //return ResponseEntity.ok("OK request");
+        return ResponseEntity.ok("Brand found: " + brand.getName());
+    }
+
+    private Brand getBrand(String brandId) {
         try {
-            Integer.parseInt(brandIdStr);
+            return brandService.getBrandById(Integer.parseInt(brandId));
         } catch (NumberFormatException e) {
             throw new InvalidBrandIdException();
         }
-
-        return ResponseEntity.ok("OK request");
     }
 }
