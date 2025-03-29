@@ -1,5 +1,7 @@
 package com.bcnc.pricesapi.application.web;
 
+import com.bcnc.pricesapi.application.dto.PriceResponse;
+import com.bcnc.pricesapi.application.service.PriceService;
 import com.bcnc.pricesapi.domain.exception.*;
 import com.bcnc.pricesapi.application.service.BrandService;
 import com.bcnc.pricesapi.domain.model.Brand;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 
 @RestController
@@ -17,40 +21,47 @@ import java.time.format.DateTimeParseException;
 public class PriceController {
 
     private final BrandService brandService;
+    private final PriceService priceService;
 
-    public PriceController(BrandService brandService) {
+    public PriceController(BrandService brandService, PriceService priceService) {
         this.brandService = brandService;
+        this.priceService = priceService;
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> prices(
+    public ResponseEntity<PriceResponse> prices(
             @RequestParam(name = "date", required = false) String dateStr,
             @RequestParam(name = "productid", required = false) String productIdStr,
             @RequestParam(name = "brandid", required = false) String brandIdStr
     ) {
-        // Validar si falta algún parámetro
+
         if (dateStr == null || productIdStr == null || brandIdStr == null) {
             throw new MissingParameterException();
         }
 
-        // Validar formato de date
+        LocalDateTime date = getDate(dateStr);
+        Long productId = getProductId(productIdStr);
+        Brand brand = getBrand(brandIdStr);
+
+        PriceResponse priceResponse = priceService.getPrice(productId, brand.getId(), date);
+
+        return ResponseEntity.ok(priceResponse);
+    }
+
+    private LocalDateTime getDate(String dateStr) {
         try {
-            Instant.parse(dateStr);
+            return Instant.parse(dateStr).atZone(ZoneOffset.UTC).toLocalDateTime();
         } catch (DateTimeParseException e) {
             throw new InvalidDateFormatException();
         }
+    }
 
-        // Validar productid numérico
+    private Long getProductId(String productId) {
         try {
-            Long.parseLong(productIdStr);
+            return Long.parseLong(productId);
         } catch (NumberFormatException e) {
             throw new InvalidProductIdException();
         }
-
-        Brand brand = getBrand(brandIdStr);
-
-        //return ResponseEntity.ok("OK request");
-        return ResponseEntity.ok("Brand found: " + brand.getName());
     }
 
     private Brand getBrand(String brandId) {
