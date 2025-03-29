@@ -34,13 +34,13 @@ Se utiliza una base de datos en memoria H2 para almacenar los datos de precios.
 2.  **Consultar el Endpoint:**
     * El endpoint REST está disponible en `/prices`.
     * Puedes realizar peticiones GET con los siguientes parámetros:
-        * `brandId`: Identificador de la cadena (brand).
+        * `brandid`: Identificador de la cadena (brand).
         * `date`: Fecha de aplicación (en formato ISO 8601).
-        * `productId`: Identificador del producto.
+        * `productid`: Identificador del producto.
 
     * Ejemplo de petición:
         ```
-        GET /prices?brandId=1&date=2020-06-14T10:00:00&productId=35455
+        GET /prices?brandid=1&date=2020-06-14T10:00:00Z&productid=35455
         ```
 
 ## Pruebas
