@@ -1,7 +1,11 @@
+import com.github.spotbugs.snom.SpotBugsReport
+import com.github.spotbugs.snom.SpotBugsTask
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.github.spotbugs' version '5.0.13'
     //id 'jacoco'
 }
 
@@ -78,6 +82,20 @@ tasks.named('check') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 */
+
+spotbugs {
+    toolVersion = '4.9.3'
+    ignoreFailures = false
+    effort = 'max'
+    reportLevel = 'high'
+}
+
+tasks.withType(SpotBugsTask).configureEach {
+    reports(({
+        xml.required = true
+        html.required = true
+    } as Closure<NamedDomainObjectContainer<? extends SpotBugsReport>>))
+}
 
 test {
     //jvmArgs '-XX:+EnableDynamicAgentLoading'

@@ -84,3 +84,19 @@ Test cases for REST endpoint:
 ````
 ./gradlew integrationTest
 ````
+
+## Linter: SpotBugs
+
+This project includes **SpotBugs** as a static code analysis tool. SpotBugs helps identify potential bugs, vulnerabilities, and bad practices in the code.
+
+### How to use SpotBugs
+
+1. **Installation**: SpotBugs is already integrated into the project, so no manual installation is required.
+
+2. **Running SpotBugs**: 
+
+    ```bash
+    ./gradlew spotbugsMain
+    ```
+
+3. **Results**: The SpotBugs analysis results are saved in a `build/spotbugs` directory. You can review these reports for more details on the issues detected.
