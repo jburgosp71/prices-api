@@ -9,6 +9,16 @@ plugins {
     id 'jacoco'
 }
 
+springBoot {
+    mainClass = 'com.bcnc.pricesapi.PricesApiApplication'
+}
+
+tasks.named('bootJar') {
+}
+
+tasks.withType(Jar).configureEach {
+}
+
 group = 'com.bcnc'
 version = '0.0.1-SNAPSHOT'
 

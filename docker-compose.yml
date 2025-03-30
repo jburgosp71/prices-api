@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: prices-api
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+    restart: unless-stopped

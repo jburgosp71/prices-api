@@ -45,6 +45,26 @@ Managed in `build.gradle`:
 ./gradlew bootRun
 ```
 
+## How to Run the Application with Docker Compose
+
+To run the `prices-api` application using Docker Compose, follow these steps:
+
+### Prerequisites
+1. Ensure you have **Docker** and **Docker Compose** installed on your system.
+    - [Install Docker](https://docs.docker.com/get-docker/)
+    - [Install Docker Compose](https://docs.docker.com/compose/install/)
+
+
+2. Start application:
+````
+docker-compose run -d --build
+````
+
+3. Stop application
+````
+docker-compose down
+````
+
 ### Query the Endpoint
 **Endpoint:** `/prices`
 
@@ -100,3 +120,9 @@ This project includes **SpotBugs** as a static code analysis tool. SpotBugs help
     ```
 
 3. **Results**: The SpotBugs analysis results are saved in a `build/spotbugs` directory. You can review these reports for more details on the issues detected.
+
+## TODO
+
+1. **Parameters no case-sensitive**
+2. **Not found page when access to unknown endpoint**
+3. **Apply infrastructure/kubernetes/pricesapi-deployment.tpl.yml on .gitlab-cy.yml**

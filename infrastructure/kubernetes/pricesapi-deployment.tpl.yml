@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricesapi-deployment
+  labels:
+    app: pricesapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pricesapi
+  template:
+    metadata:
+      labels:
+        app: pricesapi
+    spec:
+      containers:
+        - name: pricesapi
+          image: ${IMAGE_NAME}:${IMAGE_TAG}
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+      imagePullSecrets:
+        - name: gitlab-registry-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pricesapi-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: pricesapi
