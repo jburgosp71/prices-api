@@ -35,10 +35,7 @@ public class PriceController {
             @RequestParam(name = "brandid", required = false) String brandIdStr
     ) {
 
-        if (dateStr == null || productIdStr == null || brandIdStr == null) {
-            throw new MissingParameterException();
-        }
-
+        validateParameters(dateStr, productIdStr, brandIdStr);
         LocalDateTime date = getDate(dateStr);
         Long productId = getProductId(productIdStr);
         Brand brand = getBrand(brandIdStr);
@@ -46,6 +43,12 @@ public class PriceController {
         PriceResponse priceResponse = priceService.getPrice(productId, brand.getId(), date);
 
         return ResponseEntity.ok(priceResponse);
+    }
+
+    private void validateParameters(String dateStr, String productIdStr, String brandIdStr) {
+        if (dateStr == null || productIdStr == null || brandIdStr == null) {
+            throw new MissingParameterException();
+        }
     }
 
     private LocalDateTime getDate(String dateStr) {

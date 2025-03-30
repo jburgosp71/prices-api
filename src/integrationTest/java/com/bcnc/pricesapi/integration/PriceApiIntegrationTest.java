@@ -24,11 +24,6 @@ public class PriceApiIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @BeforeEach
-    void setUp() {
-        // Opcional: realizar configuraciones previas si se requiere
-    }
-
     @Test
     void testPriceRequests() {
         performTest("2020-06-14T10:00:00Z", 1,

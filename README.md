@@ -37,6 +37,9 @@ Managed in `build.gradle`:
 - Spring Boot
 - H2 Database
 - Mockito
+- JoCoCo
+- Lombok
+- SpotBugs
 
 ## Execution
 
@@ -95,10 +98,10 @@ Tests for:
 Test cases for REST endpoint:
 
 1. Request at 10:00 on the 14th for product 35455 (brand 1/ZARA)
-2. Request at 16:00 on the 14th for product 35455
-3. Request at 21:00 on the 14th for product 35455
-4. Request at 10:00 on the 15th for product 35455
-5. Request at 21:00 on the 16th for product 35455
+2. Request at 16:00 on the 14th for product 35455 (brand 1/ZARA)
+3. Request at 21:00 on the 14th for product 35455 (brand 1/ZARA)
+4. Request at 10:00 on the 15th for product 35455 (brand 1/ZARA)
+5. Request at 21:00 on the 16th for product 35455 (brand 1/ZARA)
 
 **Run integration tests:**
 ````
