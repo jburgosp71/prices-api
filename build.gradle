@@ -6,7 +6,7 @@ plugins {
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.github.spotbugs' version '5.0.13'
-    //id 'jacoco'
+    id 'jacoco'
 }
 
 group = 'com.bcnc'
@@ -42,46 +42,20 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-    // Dependencias para los tests de integración
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
 }
 
-/*
 jacoco {
-    toolVersion = "0.8.11" // o la versión más reciente
+    toolVersion = "0.8.10" // Usa la última versión disponible
 }
-*/
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
-/*
-tasks.named('jacocoTestReport') {
-    reports {
-        xml.required = true
-        csv.required = false
-        html.required = true
-    }
-}
-
-tasks.named('jacocoTestCoverageVerification') {
-    violationRules {
-        rule {
-            enabled = true
-            limits {
-                minimum = 0.80 // 80% de cobertura mínima
-            }
-        }
-    }
-}
-
-tasks.named('check') {
-    dependsOn tasks.named('jacocoTestCoverageVerification')
-}
-*/
 
 spotbugs {
     toolVersion = '4.9.3'
@@ -98,11 +72,9 @@ tasks.withType(SpotBugsTask).configureEach {
 }
 
 test {
-    //jvmArgs '-XX:+EnableDynamicAgentLoading'
     jvmArgs += ["-Djdk.attach.allowAttachSelf=true"]
 }
 
-// Definir un nuevo sourceSet para los tests de integración
 sourceSets {
     integrationTest {
         java.srcDir file('src/integrationTest/java')
@@ -112,24 +84,42 @@ sourceSets {
     }
 }
 
-// Configurar las dependencias para los tests de integración
 configurations {
     integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
-// Definir la tarea para ejecutar los tests de integración
 tasks.register('integrationTest', Test) {
     description = 'Ejecuta los tests de integración'
     group = 'verification'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+tasks.jacocoTestReport {
+    dependsOn tasks.test, tasks.integrationTest
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn tasks.jacocoTestReport
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8 // 80% de cobertura mínima (ajústalo si necesitas otro umbral)
+            }
+        }
+    }
 }
 
 tasks.named('processIntegrationTestResources') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-// Asegurar que check también ejecute los tests de integración
-check.dependsOn integrationTest
+//check.dependsOn integrationTest
+check.dependsOn jacocoTestCoverageVerification
