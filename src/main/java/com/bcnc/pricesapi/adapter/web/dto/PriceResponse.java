@@ -1,4 +1,4 @@
-package com.bcnc.pricesapi.application.dto;
+package com.bcnc.pricesapi.adapter.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

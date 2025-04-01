@@ -1,6 +1,7 @@
 package com.bcnc.pricesapi.application.web;
 
-import com.bcnc.pricesapi.application.dto.PriceResponse;
+import com.bcnc.pricesapi.adapter.web.PriceController;
+import com.bcnc.pricesapi.adapter.web.dto.PriceResponse;
 import com.bcnc.pricesapi.application.service.BrandService;
 import com.bcnc.pricesapi.application.service.PriceService;
 import com.bcnc.pricesapi.domain.exception.BrandNotFoundException;

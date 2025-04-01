@@ -1,7 +1,6 @@
 package com.bcnc.pricesapi.integration;
 
-import com.bcnc.pricesapi.application.dto.PriceResponse;
-import org.junit.jupiter.api.BeforeEach;
+import com.bcnc.pricesapi.adapter.web.dto.PriceResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;

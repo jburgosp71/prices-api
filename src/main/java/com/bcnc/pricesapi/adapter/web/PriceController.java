@@ -1,6 +1,6 @@
-package com.bcnc.pricesapi.application.web;
+package com.bcnc.pricesapi.adapter.web;
 
-import com.bcnc.pricesapi.application.dto.PriceResponse;
+import com.bcnc.pricesapi.adapter.web.dto.PriceResponse;
 import com.bcnc.pricesapi.application.service.PriceService;
 import com.bcnc.pricesapi.domain.exception.*;
 import com.bcnc.pricesapi.application.service.BrandService;

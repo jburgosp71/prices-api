@@ -1,6 +1,5 @@
-package com.bcnc.pricesapi.application.exception;
+package com.bcnc.pricesapi.domain.exception;
 
-import com.bcnc.pricesapi.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
