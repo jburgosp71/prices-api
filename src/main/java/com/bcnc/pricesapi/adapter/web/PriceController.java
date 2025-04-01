@@ -5,6 +5,7 @@ import com.bcnc.pricesapi.application.service.PriceService;
 import com.bcnc.pricesapi.domain.exception.*;
 import com.bcnc.pricesapi.application.service.BrandService;
 import com.bcnc.pricesapi.domain.model.Brand;
+import com.bcnc.pricesapi.domain.model.Price;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +41,20 @@ public class PriceController {
         Long productId = getProductId(productIdStr);
         Brand brand = getBrand(brandIdStr);
 
-        PriceResponse priceResponse = priceService.getPrice(productId, brand.getId(), date);
+        return ResponseEntity.ok(getPrice(productId, brand, date));
+    }
 
-        return ResponseEntity.ok(priceResponse);
+    private PriceResponse getPrice(Long productId, Brand brand, LocalDateTime date) {
+        Price price = priceService.findPrice(productId, brand.getId(), date);
+        return new PriceResponse(
+                price.getProductId(),
+                price.getBrand().getId(),
+                price.getPriceList(),
+                price.getStartDate(),
+                price.getEndDate(),
+                price.getPrice(),
+                price.getCurrency()
+        );
     }
 
     private void validateParameters(String dateStr, String productIdStr, String brandIdStr) {

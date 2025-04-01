@@ -1,12 +1,12 @@
-package com.bcnc.pricesapi.application.web;
+package com.bcnc.pricesapi.adapter.web;
 
-import com.bcnc.pricesapi.adapter.web.PriceController;
 import com.bcnc.pricesapi.adapter.web.dto.PriceResponse;
 import com.bcnc.pricesapi.application.service.BrandService;
 import com.bcnc.pricesapi.application.service.PriceService;
 import com.bcnc.pricesapi.domain.exception.BrandNotFoundException;
 import com.bcnc.pricesapi.domain.exception.PriceNotFoundException;
 import com.bcnc.pricesapi.domain.model.Brand;
+import com.bcnc.pricesapi.domain.model.Price;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -49,10 +49,19 @@ class PriceControllerTest {
                 LocalDateTime.of(2020, 12, 31, 23, 59),
                 BigDecimal.valueOf(35.50), "EUR"
         );
+        Price price = new Price();
+        price.setProductId(35455L);
+        price.setPriceList(1);
+        price.setBrand(brand);
+        price.setPrice(BigDecimal.valueOf(35.50));
+        price.setCurrency("EUR");
+        price.setStartDate(LocalDateTime.of(2020, 6, 14, 0, 0));
+        price.setEndDate(LocalDateTime.of(2020, 12, 31, 23, 59));
+        price.setPriority(1);
 
         when(brandService.getBrandById(1)).thenReturn(brand);
-        when(priceService.getPrice(35455L, 1, LocalDateTime.of(2020, 6, 14, 16, 0)))
-                .thenReturn(priceResponseDTO);
+        when(priceService.findPrice(35455L, 1, LocalDateTime.of(2020, 6, 14, 16, 0)))
+                .thenReturn(price);
 
         ResponseEntity<PriceResponse> response = priceController.prices(
                 "2020-06-14T16:00:00Z",
@@ -88,7 +97,7 @@ class PriceControllerTest {
         brand.setName("ZARA");
 
         when(brandService.getBrandById(1)).thenReturn(brand);
-        when(priceService.getPrice(99999L, 1, LocalDateTime.of(2023, 8, 2, 10, 30)))
+        when(priceService.findPrice(99999L, 1, LocalDateTime.of(2023, 8, 2, 10, 30)))
                 .thenThrow(new PriceNotFoundException("No price found for product 99999 and brand 1"));
 
         Exception exception = assertThrows(PriceNotFoundException.class, () -> priceController.prices(
