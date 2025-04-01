@@ -3,7 +3,7 @@ package com.bcnc.pricesapi.application.service;
 import com.bcnc.pricesapi.domain.model.Price;
 import com.bcnc.pricesapi.adapter.web.dto.PriceResponse;
 import com.bcnc.pricesapi.domain.exception.PriceNotFoundException;
-import com.bcnc.pricesapi.domain.repository.PriceRepository;
+import com.bcnc.pricesapi.adapter.persistence.repository.PriceRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

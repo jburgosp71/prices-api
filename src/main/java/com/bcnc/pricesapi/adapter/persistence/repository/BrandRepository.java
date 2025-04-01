@@ -1,4 +1,4 @@
-package com.bcnc.pricesapi.domain.repository;
+package com.bcnc.pricesapi.adapter.persistence.repository;
 
 import com.bcnc.pricesapi.domain.model.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
