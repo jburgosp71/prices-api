@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestPropertySource(locations = "classpath:application-integrationTest.properties")
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class PriceApiIntegrationTest {
 
     @Autowired
@@ -55,7 +56,7 @@ public class PriceApiIntegrationTest {
                              LocalDateTime expectedStartDate, LocalDateTime expectedEndDate,
                              BigDecimal expectedPrice) {
 
-        String url = "/prices/?date=" + date + "&productid=" + 35455L + "&brandid=" + 1;
+        String url = "/price-search?date=" + date + "&productid=" + 35455L + "&brandid=" + 1;
 
         ResponseEntity<PriceResponse> response = restTemplate.getForEntity(url, PriceResponse.class);
 

@@ -38,7 +38,7 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_PriceFound() {
+    void testPriceSearch_PriceFound() {
         Brand brand = new Brand();
         brand.setId(1);
         brand.setName("ZARA");
@@ -63,7 +63,7 @@ class PriceControllerTest {
         when(priceService.findPrice(35455L, 1, LocalDateTime.of(2020, 6, 14, 16, 0)))
                 .thenReturn(price);
 
-        ResponseEntity<PriceResponse> response = priceController.prices(
+        ResponseEntity<PriceResponse> response = priceController.priceSearch(
                 "2020-06-14T16:00:00Z",
                 "35455",
                 "1"
@@ -78,10 +78,10 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_BrandNotFound() {
+    void testPriceSearch_BrandNotFound() {
         when(brandService.getBrandById(2)).thenThrow(new BrandNotFoundException("Brand not found with id: 2"));
 
-        Exception exception = assertThrows(BrandNotFoundException.class, () -> priceController.prices(
+        Exception exception = assertThrows(BrandNotFoundException.class, () -> priceController.priceSearch(
                 "2023-08-02T10:30:00Z",
                 "35455",
                 "2"
@@ -91,7 +91,7 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_PriceNotFound() {
+    void testPriceSearch_PriceNotFound() {
         Brand brand = new Brand();
         brand.setId(1);
         brand.setName("ZARA");
@@ -100,7 +100,7 @@ class PriceControllerTest {
         when(priceService.findPrice(99999L, 1, LocalDateTime.of(2023, 8, 2, 10, 30)))
                 .thenThrow(new PriceNotFoundException("No price found for product 99999 and brand 1"));
 
-        Exception exception = assertThrows(PriceNotFoundException.class, () -> priceController.prices(
+        Exception exception = assertThrows(PriceNotFoundException.class, () -> priceController.priceSearch(
                 "2023-08-02T10:30:00Z",
                 "99999",
                 "1"
@@ -110,8 +110,8 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_MissingParameters() {
-        Exception exception = assertThrows(RuntimeException.class, () -> priceController.prices(
+    void testPriceSearch_MissingParameters() {
+        Exception exception = assertThrows(RuntimeException.class, () -> priceController.priceSearch(
                 null,
                 "35455",
                 "1"
@@ -121,8 +121,8 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_InvalidDateFormat() {
-        Exception exception = assertThrows(RuntimeException.class, () -> priceController.prices(
+    void testPriceSearch_InvalidDateFormat() {
+        Exception exception = assertThrows(RuntimeException.class, () -> priceController.priceSearch(
                 "invalid-date",
                 "35455",
                 "1"
@@ -132,8 +132,8 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_InvalidProductId() {
-        Exception exception = assertThrows(RuntimeException.class, () -> priceController.prices(
+    void testPriceSearch_InvalidProductId() {
+        Exception exception = assertThrows(RuntimeException.class, () -> priceController.priceSearch(
                 "2023-08-02T10:30:00Z",
                 "invalid-product-id",
                 "1"
@@ -143,8 +143,8 @@ class PriceControllerTest {
     }
 
     @Test
-    void testPrices_InvalidBrandId() {
-        Exception exception = assertThrows(RuntimeException.class, () -> priceController.prices(
+    void testPriceSearch_InvalidBrandId() {
+        Exception exception = assertThrows(RuntimeException.class, () -> priceController.priceSearch(
                 "2023-08-02T10:30:00Z",
                 "35455",
                 "invalid-brand-id"

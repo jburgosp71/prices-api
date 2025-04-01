@@ -69,7 +69,7 @@ docker-compose down
 ````
 
 ### Query the Endpoint
-**Endpoint:** `/prices`
+**Endpoint:** `/price-seatch`
 
 **Parameters:**
 - `brandid`: Brand identifier
@@ -78,8 +78,10 @@ docker-compose down
 
 **Example Request:**
 ````
-GET /prices?brandid=1&date=2020-06-14T10:00:00Z&productid=35455
+GET /price-search?brandid=1&date=2020-06-14T10:00:00Z&productid=35455
 ````
+
+**Request endpoint documentation** `/price-seatch`
 
 ## Testing
 

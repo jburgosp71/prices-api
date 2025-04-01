@@ -6,6 +6,13 @@ import com.bcnc.pricesapi.domain.exception.*;
 import com.bcnc.pricesapi.application.service.BrandService;
 import com.bcnc.pricesapi.domain.model.Brand;
 import com.bcnc.pricesapi.domain.model.Price;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +25,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 
 @RestController
-@RequestMapping("/prices")
+@RequestMapping("/price-search")
+@Tag(name = "Prices API", description = "API for find prices")
 public class PriceController {
 
     private final BrandService brandService;
@@ -29,10 +37,20 @@ public class PriceController {
         this.priceService = priceService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<PriceResponse> prices(
+    @Operation(summary = "Get prices", description = "Return price for a brand product at specific date.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found price"),
+            @ApiResponse(responseCode = "400", description = "Invalid parameters or not included", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Brand or price not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Internal error", content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping
+    public ResponseEntity<PriceResponse> priceSearch(
+            @Parameter(description = "Date in ISO format (ej: 2025-04-01T12:00:00Z)", required = true)
             @RequestParam(name = "date", required = false) String dateStr,
+            @Parameter(description = "Product ID", required = true)
             @RequestParam(name = "productid", required = false) String productIdStr,
+            @Parameter(description = "Brand ID", required = true)
             @RequestParam(name = "brandid", required = false) String brandIdStr
     ) {
 
